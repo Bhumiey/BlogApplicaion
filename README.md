@@ -10,6 +10,8 @@
 
 -> go run cmd/main.go
 
+-> API endpoints can be tested using Postman
+
 ----Database Setup----
 
 -> Install pgAdmin

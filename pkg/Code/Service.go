@@ -3,13 +3,13 @@ package Code
 type PostgresRepository interface {
 	AddNewBlog(b Blog) error
 	GetAllBlog() (BlogList, error)
-	DeleteBlog(id int) error
+	DeleteBlog(title string) error
 }
 
 type PostgressService interface {
 	AddNewBlog(blog Blog) error
 	GetAllBlog() (BlogList, error)
-	DeleteBlog(id int) error
+	DeleteBlog(title string) error
 }
 
 type postgressService struct {
@@ -34,8 +34,8 @@ func (s *postgressService) GetAllBlog() (BlogList, error) {
 	}
 	return blogList, nil
 }
-func (s *postgressService) DeleteBlog(id int) error {
-	if err := s.pr.DeleteBlog(id); err != nil {
+func (s *postgressService) DeleteBlog(title string) error {
+	if err := s.pr.DeleteBlog(title); err != nil {
 		return err
 	}
 	return nil

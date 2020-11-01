@@ -3,7 +3,6 @@ package Code
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 )
 
 var (
@@ -13,11 +12,6 @@ var (
 func getHandler(s PostgressService) func(w http.ResponseWriter, r *http.Request) {
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Credentials", "true")
-		if origin := r.Header.Get("Origin"); origin != "" {
-			w.Header().Set("Access-Control-Allow-Origin", origin)
-		}
-		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 		blogList, err := s.GetAllBlog()
 		if err != nil {
 			json.NewEncoder(w).Encode("Something went wrong while getting blogs...")
@@ -31,11 +25,6 @@ func getHandler(s PostgressService) func(w http.ResponseWriter, r *http.Request)
 func postHandler(s PostgressService) func(w http.ResponseWriter, r *http.Request) {
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Credentials", "true")
-		if origin := r.Header.Get("Origin"); origin != "" {
-			w.Header().Set("Access-Control-Allow-Origin", origin)
-		}
-		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 		json.NewDecoder(r.Body).Decode(&blog)
 
 		if err := s.AddNewBlog(blog); err != nil {
@@ -49,13 +38,8 @@ func postHandler(s PostgressService) func(w http.ResponseWriter, r *http.Request
 }
 func deleteHandler(s PostgressService) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Credentials", "true")
-		if origin := r.Header.Get("Origin"); origin != "" {
-			w.Header().Set("Access-Control-Allow-Origin", origin)
-		}
-		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-		id, _ := strconv.Atoi(r.FormValue("id"))
-		if err := s.DeleteBlog(id); err != nil {
+		title := r.FormValue("title")
+		if err := s.DeleteBlog(title); err != nil {
 			json.NewEncoder(w).Encode("Something went wrong...")
 			return
 		}

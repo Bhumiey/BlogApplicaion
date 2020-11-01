@@ -49,9 +49,9 @@ func (ps *PostgresStorage) AddNewBlog(b Code.Blog) error {
 	fmt.Println("New record ID is:", id)
 	return nil
 }
-func (ps *PostgresStorage) DeleteBlog(id int) error {
-	sqlStatement := `DELETE FROM blog WHERE id = $1;`
-	_, err := ps.db.Exec(sqlStatement, id)
+func (ps *PostgresStorage) DeleteBlog(title string) error {
+	sqlStatement := `DELETE FROM blog WHERE blog_title = $1;`
+	_, err := ps.db.Exec(sqlStatement, title)
 	if err != nil {
 		return err
 	}
